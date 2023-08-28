@@ -8,17 +8,17 @@ from config import db
 
 # Models go here!
 
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     buyer = db.Column(db.Boolean, default=False)
 
-    # bids = db.relationship('Marketplace', backref='seller')
+    items = db.relationship('Item', secondary='user_items', back_populates='users')
+    serialize_rules = ('-user_items.users',)
 
-
-class Item(db.Model):
+class Item(db.Model, SerializerMixin):
     __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +27,13 @@ class Item(db.Model):
     description = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    listed_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+    users = db.relationship('User', secondary='user_items', back_populates='items')
     categories = db.relationship('Category', secondary="item_categories", back_populates="items")
+    
+    serialize_rules = ('-category.items','-user_item.items')
     
     @validates('price')
     def validate_price(self, key, price): 
@@ -41,24 +47,26 @@ class Item(db.Model):
             raise ValueError("Item must have a name.")
         return name 
     
-class Bid(db.Model):
-    __tablename__ = "bids"
+class User_Item(db.Model, SerializerMixin):
+    __tablename__ = "user_items"
 
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
     buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    seller_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
+    #Stretch goal, have the item listing expire a week from listed date. 
     # current_date = datetime.now()
     # one_week_later = current_date + timedelta(weeks=1)
-    #Stretch-goal: end_date = db.Column(db.DateTime, one_week_later)
+    # end_date = db.Column(db.DateTime, one_week_later)
 
-class Category(db.Model):
+class Category(db.Model, SerializerMixin):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String)
     items = db.relationship('Item', secondary="item_categories", back_populates="categories")
+
+    serialize_rules =('-items.categories',)
 
 class ItemCategory(db.Model):
     __tablename__='item_categories'

@@ -8,17 +8,18 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Item, Bid, Category, ItemCategory
+from models import db, User, Item, User_Item, Category, ItemCategory
 
 fake = Faker()
 
-def create_items():
+def create_items(users):
     items = []
     for i in range(15):
         i = Item(
             name = fake.name(),
             price = fake.random_int(),
-            description = fake.text(),            
+            description = fake.text(),   
+            listed_by = rc(users).id
         )
         items.append(i)
     return items 
@@ -35,8 +36,8 @@ def create_users():
 def create_bids(items, users):
     bids = []
     for i in range(5):
-        b = Bid(item_id = rc(items).id,
-                 seller_id = rc(users).id)
+        b = User_Item(item_id = rc(items).id,
+        )
         bids.append(b)
     return bids
 
@@ -59,20 +60,20 @@ if __name__ == '__main__':
         print("Clearing db...")
         Item.query.delete() 
         User.query.delete() 
-        Bid.query.delete()
+        User_Item.query.delete()
         Category.query.delete()
         ItemCategory.query.delete()
         
-        print("Seeding items")
-        items = create_items()
-        db.session.add_all(items)
-        db.session.commit() 
-
 
         print("seeding users")
         users = create_users()
         db.session.add_all(users)
         db.session.commit()
+
+        print("Seeding items")
+        items = create_items(users)
+        db.session.add_all(items)
+        db.session.commit() 
 
         print("seeding bids")
         bids = create_bids(items, users)
