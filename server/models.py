@@ -37,7 +37,7 @@ class Item(db.Model):
     
     @validates('name')
     def validate_name(self, key, name):
-        if name is None or len(num) <= 0:
+        if name is None or len(name) <= 0:
             raise ValueError("Item must have a name.")
         return name 
     
@@ -46,14 +46,14 @@ class Bid(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    buyer_id = db.Column(db.String, db.ForeignKey('users.id'))
+    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     seller_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     # current_date = datetime.now()
     # one_week_later = current_date + timedelta(weeks=1)
     #Stretch-goal: end_date = db.Column(db.DateTime, one_week_later)
 
-class category(db.Model):
+class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
