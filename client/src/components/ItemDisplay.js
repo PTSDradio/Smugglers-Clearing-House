@@ -4,14 +4,14 @@ function ItemDisplay({ item }){
     const [bidAmount, setBidAmount] = useState();
 
     async function enterBid(){
-        const config = {
+        const bid = {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(bidAmount),
         };
-        const res = await fetch("/items", config)
+        const res = await fetch("/items")
         if (res.ok){
             //Code here to enter bid into item. 
         } else {
@@ -32,6 +32,7 @@ function ItemDisplay({ item }){
             <h3> {item.name} </h3>
             <h3> Description: <h4>{item.description}</h4> </h3>
             <h3> $ {item.price} </h3>
+            <img src={item.image_url} />
             <img />
             <form>
                 <input type='text' placeholder='Enter bid amount here' onChange={handleChange}></input>
