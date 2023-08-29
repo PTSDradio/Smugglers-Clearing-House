@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import LoginForm from "./LoginForm"
 
 function NavBar() {
+  
+
   return (
     <header>      
         <nav className="navbar-styles"> 
@@ -10,6 +13,7 @@ function NavBar() {
           <li> Sell </li>
           <li> Account </li>
         </nav>
+        <LoginForm />
     </header>
   );
 }
