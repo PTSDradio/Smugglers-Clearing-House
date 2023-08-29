@@ -5,7 +5,6 @@ import NavBar from "./NavBar";
 import SellScreen from "./SellScreen";
 import LoginForm from "./LoginForm"
 import AccountScreen from "./AccountScreen";
-import Search from "./Search";
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
@@ -17,12 +16,12 @@ function App() {
   return (
     <div> 
       <NavBar /> 
-      <Search handleSearch={handleSearch} />
+    
       <LoginForm />
         <Routes>
-          <Route exact path='/' element={<BuyScreen searchInput={searchInput}/>}/>
+          <Route exact path='/' element={<BuyScreen searchInput={searchInput} handleSearch={handleSearch}/>}/>
           <Route exact path='/sell' element={<SellScreen />}/>
-          <Route exact path='account' element={<AccountScreen searchInput={searchInput}/>}/> 
+          <Route exact path='account' element={<AccountScreen searchInput={searchInput} handleSearch={handleSearch}/>}/> 
         </Routes>
     </div>
     );

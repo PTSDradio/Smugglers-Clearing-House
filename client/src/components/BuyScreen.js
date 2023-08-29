@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ItemDisplay from "./ItemDisplay.js";
+import Search from "./Search";
 
-function BuyScreen({ searchInput }){
+function BuyScreen({ searchInput, handleSearch }){
     const [itemList, setItemList] = useState([])
 
     useEffect(() => {
@@ -25,8 +26,11 @@ function BuyScreen({ searchInput }){
     //the item does not show up in the list.  
     
     return (
-        <div className="items-list"> 
-            {itemsToDisplay}
+        <div>
+            <Search handleSearch={handleSearch} />
+            <div className="items-list"> 
+                {itemsToDisplay}
+            </div>
         </div>
     )
 }
