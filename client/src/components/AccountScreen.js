@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AccountScreen(){
+function AccountScreen({ searchInput }){
 
     return (
         <div> 
