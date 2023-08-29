@@ -12,7 +12,7 @@ from sqlalchemy_serializer import SerializerMixin
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User, Item, User_Item, ItemCategory, Category
+from models import User, Item, Auction, ItemCategory, Category
 
 # Views go here!
 
@@ -58,6 +58,31 @@ class UserById(Resource):
             resp = make_response({"errors": [str(er)]},400)
             return resp
 
+class UserItems(Resource):
+    def get(self):
+        q = [ user.to_dict() for user in Auction.query.all()]
+        response = make_response(q, 200)
+        return response 
+    
+    def post(self):
+        try:
+            data= request.get_json()
+            new_rel = Auction(item_id=data["item_id"], buyer_id=data["buyer_id"],
+                                 listed_by=data["listed_by"])
+            db.session.add(new_rel)
+            db.session.commit()
+            return make_response(new_rel.to_dict(), 200)
+        except:pass
+        pass
+
+# class UserItemById(Resource):
+#     def post(self, user_id):
+#         try:
+#             data= request.get_json()
+#             new_rel = Auction()
+#         except:pass
+#         pass
+
 class Categories(Resource):
     def get (self):
         q = [ cat.to_dict() for cat in Category.query.all()]
@@ -70,8 +95,7 @@ class Categories(Resource):
         new_cat = Category(category_name= data['category_name'])
         db.session.add(new_cat)
         db.session.commit()
-        return make_response(new_cat.to_dict(), 200)
-    
+        return make_response(new_cat.to_dict(), 200)   
     
 class Items(Resource):
     def get(self): 
@@ -131,7 +155,7 @@ api.add_resource(Items, '/items')
 api.add_resource(ItemsById, '/items/<int:id>')
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
+api.add_resource(UserItems, '/users/relationships')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
-
