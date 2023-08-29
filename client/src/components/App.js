@@ -4,10 +4,9 @@ import { Switch, Route } from "react-router-dom";
 function App() {
   return (
     <div> 
-      <Header /> 
-  
-    </div> 
-  )
+      <h1>Phase 4 Project - Smuggler's Clearing House</h1> 
+    </div>
+    );
 }
 
 export default App;
