@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Item, User_Item, Category, ItemCategory
+from models import db, User, Item, Auction, Category, ItemCategory
 
 fake = Faker()
 
@@ -19,7 +19,7 @@ def create_items(users):
             name = fake.name(),
             price = fake.random_int(),
             description = fake.text(),   
-            listed_by = rc(users).id
+            # listed_by = rc(users).id
         )
         items.append(i)
     return items 
@@ -36,7 +36,7 @@ def create_users():
 def create_bids(items, users):
     bids = []
     for i in range(5):
-        b = User_Item(item_id = rc(items).id,
+        b = Auction(item_id = rc(items).id,
         )
         bids.append(b)
     return bids
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         print("Clearing db...")
         Item.query.delete() 
         User.query.delete() 
-        User_Item.query.delete()
+        Auction.query.delete()
         Category.query.delete()
         ItemCategory.query.delete()
         

@@ -13,27 +13,42 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    buyer = db.Column(db.Boolean, default=False)
 
-    items = db.relationship('Item', secondary='user_items', back_populates='users')
-    serialize_rules = ('-user_items.users',)
+    items = db.relationship('Item',  back_populates='purchaser')
+    serialize_rules = ('-item.purchaser',)
+
+class Seller(db.Model, SerializerMixin):
+    __tablename__ = 'sellers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    items = db.relationship('Item', back_populates='seller')
+    serialize_rules = ('-item.seller',)
 
 class Item(db.Model, SerializerMixin):
     __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    image_url = db.Column(db.String)
     price = db.Column(db.Integer)
     description = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    is_purchased = db.Column(db.Boolean, default=False)
 
-    listed_by = db.Column(db.Integer, db.ForeignKey('users.id'))
-    
-    users = db.relationship('User', secondary='user_items', back_populates='items')
+    auction = db.relationship('Auction', back_populates='item', uselist=False)
+
+    seller_id = db.Column(db.Integer, db.ForeignKey('sellers.id'))
+    seller = db.relationship("Seller", back_populates='items')
+
+    purchaser_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    purchaser = db.relationship("User", back_populates='items')
+
     categories = db.relationship('Category', secondary="item_categories", back_populates="items")
     
-    serialize_rules = ('-category.items','-user_item.items')
+    serialize_rules = ('-category.items','-user.items', '-seller.items', '-auction.item' )
     
     @validates('price')
     def validate_price(self, key, price): 
@@ -47,12 +62,20 @@ class Item(db.Model, SerializerMixin):
             raise ValueError("Item must have a name.")
         return name 
     
-class User_Item(db.Model, SerializerMixin):
-    __tablename__ = "user_items"
+class Auction(db.Model, SerializerMixin):
+    __tablename__ = "auctions"
 
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    buyer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    item = db.relationship('Item', back_populates='auction')
+
+    top_bid = db.Column(db.Integer)
+    top_bid_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    top_bidder = db.Column(db.String) # might have to make another association table to handle purchasing
+
+    end_time= db.Column(db.String) # if possible handle making timer from this but this it a placeholder for now
+
+
     
     #Stretch goal, have the item listing expire a week from listed date. 
     # current_date = datetime.now()
@@ -66,7 +89,7 @@ class Category(db.Model, SerializerMixin):
     category_name = db.Column(db.String)
     items = db.relationship('Item', secondary="item_categories", back_populates="categories")
 
-    serialize_rules =('-items.categories',)
+    serialize_rules =('-item.categories',)
 
 class ItemCategory(db.Model):
     __tablename__='item_categories'
