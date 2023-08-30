@@ -8,17 +8,21 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Item, Auction, Category, ItemCategory
+from models import db, User, Item, Auction, Category, ItemCategory, Seller, ItemCategory
 
 fake = Faker()
 
-def create_items(users):
+def create_items(seller):
     items = []
     for i in range(15):
         i = Item(
             name = fake.name(),
             price = fake.random_int(),
-            description = fake.text(),   
+            image_url = """https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fdwayne-the-rock-pikmin-v0-sv7qo7tsgt2b1.jpg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3Da14114a054fc999abee8eef130e66e9b26ddfa1c""",
+            description = fake.text(),
+            seller_id = rc(seller).id,
+
+
             # listed_by = rc(users).id
         )
         items.append(i)
@@ -28,7 +32,15 @@ def create_users():
     users = []
     for i in range(5):
         u = User(name = fake.name(),
-                 buyer = fake.boolean()
+
+        )
+        users.append(u)
+    return users
+
+def create_sellers():
+    users = []
+    for i in range(5):
+        u = Seller(name = fake.name(),
         )
         users.append(u)
     return users
@@ -36,8 +48,7 @@ def create_users():
 def create_bids(items, users):
     bids = []
     for i in range(5):
-        b = Auction(item_id = rc(items).id,
-        )
+        b = Auction(item_id = rc(items).id, end_time=fake.name(), top_bid_id = rc(users).id)
         bids.append(b)
     return bids
 
@@ -60,10 +71,16 @@ if __name__ == '__main__':
         print("Clearing db...")
         Item.query.delete() 
         User.query.delete() 
+        Seller.query.delete() 
         Auction.query.delete()
         Category.query.delete()
         ItemCategory.query.delete()
         
+        print("seeding sellers")
+        sellers = create_sellers()
+        db.session.add_all(sellers)
+        db.session.commit()
+
 
         print("seeding users")
         users = create_users()
