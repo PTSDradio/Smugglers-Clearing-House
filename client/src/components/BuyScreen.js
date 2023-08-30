@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ItemDisplay from "./ItemDisplay";
+import ItemDisplay from "./ItemDisplay.js";
 
 function BuyScreen(){
     const [items, setItems] = useState([])
@@ -17,8 +17,8 @@ function BuyScreen(){
     })
 
     return (
-        <div> 
-            <h1>{itemMap}</h1>
+        <div className="items-list"> 
+            {itemMap}
         </div>
     )
 }

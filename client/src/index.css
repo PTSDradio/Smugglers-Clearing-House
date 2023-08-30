@@ -1,4 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --bg: #282c34;
+  --header: #fff;
+  --link: #61dafb;
+  --text: hsla(0, 0%, 100%, 0.88);
+}
 
+.navbar-styles {
+  display: flex-wrap;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  background-color: #b34d4b;
+  color: white;
+  padding: 14px 16px;
+  text-align: center;
+}
+.navbar-styles a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.items-list{ 
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-evenly;
+}
+.item-container {
+  width: 200px; 
+  height: auto; 
+  background-color: #ccc;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  box-sizing: border-box;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

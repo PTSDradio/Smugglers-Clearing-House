@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 function NavBar() {
   return (
-    <header>
-        <h1 class='text-lg font-bold text-center'>Smuggler's Clearing House</h1>
-        <nav class='text-center'> 
+    <header>      
+        <nav className="navbar-styles"> 
+          <h1>Smuggler's Clearing House</h1>  
           <li> Buy </li>
           <li> Sell </li>
           <li> Account </li>
