@@ -1,8 +1,16 @@
+<<<<<<<< HEAD:server/migrations/versions/e5df64068e97_updates_models.py
 """updates models
 
 Revision ID: e5df64068e97
 Revises: 
 Create Date: 2023-08-30 11:17:08.775614
+========
+"""Synced up to Nigel's work
+
+Revision ID: 7df455296feb
+Revises: 
+Create Date: 2023-08-29 05:34:55.138515
+>>>>>>>> a270d732b930b3168240970245541cb6edd8f92e:server/migrations/versions/7df455296feb_synced_up_to_nigel_s_work.py
 
 """
 from alembic import op
@@ -10,7 +18,11 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+<<<<<<<< HEAD:server/migrations/versions/e5df64068e97_updates_models.py
 revision = 'e5df64068e97'
+========
+revision = '7df455296feb'
+>>>>>>>> a270d732b930b3168240970245541cb6edd8f92e:server/migrations/versions/7df455296feb_synced_up_to_nigel_s_work.py
 down_revision = None
 branch_labels = None
 depends_on = None

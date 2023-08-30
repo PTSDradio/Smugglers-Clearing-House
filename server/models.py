@@ -95,5 +95,3 @@ class ItemCategory(db.Model):
     __tablename__='item_categories'
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'),primary_key=True)
-
-

@@ -101,4 +101,3 @@ if __name__ == '__main__':
         categories = create_category(items)
         db.session.add_all(categories)
         db.session.commit()
-
