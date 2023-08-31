@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, make_response, jsonify, request
+from flask import request, make_response, jsonify, session
 from flask_restful import Resource
 from sqlalchemy_serializer import SerializerMixin
 
@@ -14,6 +14,7 @@ from config import app, db, api
 # Add your model imports
 from models import User, Item, Auction, ItemCategory, Category, Seller
 
+app.secret_key = 'BAD_SECRET_KEY'
 # Views go here!
 
 @app.route('/')
@@ -29,7 +30,7 @@ class Users(Resource):
     def post(self):
         data = request.get_json()
 
-        new_user = User(name=data['name'])
+        new_user = User(username=data['username'], password=data['password'])
         db.session.add(new_user)
         db.session.commit()
         return make_response(new_user.to_dict(), 200)
@@ -73,7 +74,7 @@ class Sellers(Resource):
     def post(self):
         data = request.get_json()
 
-        new_user = Seller(name=data['name'])
+        new_user = Seller(username=data['username'], password=data['password'])
         db.session.add(new_user)
         db.session.commit()
         return make_response(new_user.to_dict(), 200)
@@ -194,6 +195,7 @@ class Items(Resource):
             return make_response({"Error":["Invalid item inputs"]}, 400)
 
 class ItemsById(Resource): 
+
     def get(self, id): 
         item = Item.query.filter(Item.id == id).one_or_none()
         if item is None: 
@@ -225,19 +227,103 @@ class ItemsById(Resource):
         db.session.commit()
         return make_response({}, 204)
 
+class ItemCategories(Resource):
+    def get(self):
+        q = [ user.to_dict() for user in ItemCategory.query.all()]
+        response = make_response(q, 200)
+        return response 
+    
+    def post(self):
+        data = request.get_json()
 
+        new_user = ItemCategory(category_id=data['category_id'], item_id=data['item_id'])
+        db.session.add(new_user)
+        db.session.commit()
+        return make_response(new_user.to_dict(), 200)
+    
+class ICById(Resource):
+    def delete(self, id): 
+        item = ItemCategory.query.filter(ItemCategory.id == id).one_or_none()
+        if item is None: 
+            return make_response({"Error":"Item-category relation not found"}, 404)
+        db.session.delete(item)
+        db.session.commit()
+        return make_response({}, 204)
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        user_type = data["user_type"]
+        username = data["username"]
+        password = data["password"]
+
+        if user_type == "buyer":
+            user = User.query.filter(User.username == username).first()
+
+            if user and user.password == password:
+                session['user_id']= user.id
+                session['user_type']= user_type
+                return user.to_dict(), 200
+            return make_response({'error': 'invalid password'}, 401)
+        elif user_type == "seller":
+            seller = Seller.query.filter(Seller.username == username).first()
+
+            if seller and seller.password == password:
+                session['user_id']= seller.id
+                session['user_type']= user_type
+                return user.to_dict(), 200
+            return make_response({'error': 'invalid password'}, 401)
+        return make_response({'error': '401 Unauthorized'}, 401)
+    
+class Register(Resource):
+    def post(self):
+        data = request.get_json()
+        user_type = data["user_type"]
+        username = data["username"]
+        password = data["password"]
+        if user_type == "buyer":
+            new_user = User(username=data['username'], password=data['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            return make_response(new_user.to_dict(), 200)
+        elif user_type == "seller":
+            new_user = Seller(username=data['username'], password=data['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            return make_response(new_user.to_dict(), 200)
+        return make_response("problemo", 200)
+
+class Logout(Resource):
+    def delete(self):
+        if session['user_id'] and session['user_type']:
+            session['user_id']= None
+            session['user_type']= None
+            return make_response({'message': '200: Successfully cleared session data'}, 200)
+        else:
+            return make_response({'error': "you're not logged in silly"}, 404)
+
+
+            
+api.add_resource(ItemCategories, '/item-category-relations')
 
 api.add_resource(Categories, '/categories')
 api.add_resource(CatById, '/categories/<int:id>')
 api.add_resource(Items, '/items')
 api.add_resource(ItemsById, '/items/<int:id>')
+
 api.add_resource(Users, '/users')
 api.add_resource(UserById, '/users/<int:id>')
+
 api.add_resource(Sellers, '/sellers')
 api.add_resource(SellerById, '/sellers/<int:id>')
+
 api.add_resource(Auctions, '/auctions')
 api.add_resource(AuctionById, '/auctions/<int:id>')
-# api.add_resource(UserItems, '/users/relationships')
+
+
+api.add_resource(Login, '/login')
+api.add_resource(Register, '/register')
+api.add_resource(Logout, '/logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates 
+from sqlalchemy.ext.hybrid import hybrid_property
 import datetime
 
 from config import db
@@ -12,7 +13,8 @@ class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    username = db.Column(db.String)
+    password = db.Column(db.String)
 
     items = db.relationship('Item',  back_populates='purchaser')
     serialize_rules = ('-items.purchaser',)
@@ -21,7 +23,8 @@ class Seller(db.Model, SerializerMixin):
     __tablename__ = 'sellers'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    username = db.Column(db.String)
+    password = db.Column(db.String)
 
     listings = db.relationship('Item', cascade='all, delete', back_populates='seller')
     serialize_rules = ('-listings.seller',)
@@ -91,7 +94,9 @@ class Category(db.Model, SerializerMixin):
 
     serialize_rules =('-item.categories',)
 
-class ItemCategory(db.Model):
+class ItemCategory(db.Model, SerializerMixin):
     __tablename__='item_categories'
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'),primary_key=True)
-    item_id = db.Column(db.Integer, db.ForeignKey('items.id'),primary_key=True)
+
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
