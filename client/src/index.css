@@ -5,6 +5,7 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+/*navbar*/
 .navbar-styles {
   display: flex-wrap;
   justify-content: center;
@@ -51,4 +52,14 @@ li {
   text-decoration: none;
   color: #e5e6b5;
   text-align: left;
+}
+
+/*login form*/
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: 1em;
+  right: 0;
 }

@@ -41,7 +41,7 @@ function LoginForm(){
     };
 
     return (
-      <div>
+      <div className='login-container'>
         {!isLoggedIn ? (
           <form onSubmit={handleLogin}>
             <label>
