@@ -27,13 +27,15 @@ function ItemDisplay({ item }){
         enterBid()
     }
 
+
+    //Need to add code to show the current highest bid amount.
+    //Need to add code to show the list of categories. 
     return (
         <div className='item-container'>
             <h3> {item.name} </h3>
             <h3> Description: <h4>{item.description}</h4> </h3>
             <h3> $ {item.price} </h3>
             <img src={item.image_url} />
-            <img />
             <form>
                 <input type='text' placeholder='Enter bid amount here' onChange={handleChange}></input>
                 <button type='submit' onClick={handleSubmit}> Enter Bid </button>

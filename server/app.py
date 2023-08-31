@@ -19,7 +19,6 @@ app.secret_key = 'BAD_SECRET_KEY'
 
 @app.route('/')
 def index():
-
     return '<h1>Phase 4 Project Server</h1>'
 
 class Users(Resource):
@@ -154,7 +153,6 @@ class AuctionById(Resource):
         db.session.delete(auction)
         db.session.commit()
         return make_response("", 204)
-
 class Categories(Resource):
     def get (self):
         q = [ cat.to_dict() for cat in Category.query.all()]
@@ -310,7 +308,6 @@ api.add_resource(ItemCategories, '/item-category-relations')
 
 api.add_resource(Categories, '/categories')
 api.add_resource(CatById, '/categories/<int:id>')
-
 api.add_resource(Items, '/items')
 api.add_resource(ItemsById, '/items/<int:id>')
 
