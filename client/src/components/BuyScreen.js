@@ -20,7 +20,9 @@ function BuyScreen({ searchInput, handleSearch }){
           .includes(searchInput.toLowerCase());
       });
     const itemsToDisplay = filteredItems.map((item) => {
-        return <ItemDisplay id={item.id} item={item} /> 
+        if (item.is_purchased === false) {
+            return <ItemDisplay id={item.id} item={item} /> 
+        }
     })
     //Where can we code so if item.is_purchased is true, 
     //the item does not show up in the list.  
