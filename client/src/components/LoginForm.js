@@ -3,13 +3,10 @@ import { NavLink } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
 
-function LoginForm(){
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+function LoginForm({ isLoggedIn, setIsLoggedIn }){
     // const [userType, setUserType] = useState('');
     // const [username, setUsername] = useState('');
     // const [password, setPassword] = useState('');
-
-    const [refreshPage, setRefreshPage] = useState(false);
 
     const formSchema = yup.object().shape({
       username: yup.string().required("Must enter a username"),
@@ -25,16 +22,15 @@ function LoginForm(){
       },
       validationSchema: formSchema, 
       onSubmit: (values) => {
-        fetch('http://localhost:3000/login', {
+        fetch('http://127.0.0.1:5555/login', {
           method: 'POST', 
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(values, null, 2),
         })
         .then((res) => {
           if (res.status == 200) {
-            setRefreshPage(!refreshPage)
             setIsLoggedIn(true)
           }
         })
