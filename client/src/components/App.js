@@ -17,7 +17,6 @@ function App() {
   return (
     <div> 
       <NavBar /> 
-  
         <Routes>
           <Route exact path='/' element={<BuyScreen searchInput={searchInput} handleSearch={handleSearch}/>}/>
           <Route exact path='/sell' element={<SellScreen />}/>

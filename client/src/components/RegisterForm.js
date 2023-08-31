@@ -72,7 +72,7 @@ function RegisterForm(){
               />
             </label>
             <br />
-            <button type="submit">Login</button>
+            <button type="submit">Register</button>
           </form>
         ) : (
           <p>You have registered your account!</p>

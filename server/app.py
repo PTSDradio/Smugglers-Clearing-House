@@ -18,7 +18,6 @@ from models import User, Item, Auction, ItemCategory, Category, Seller
 
 @app.route('/')
 def index():
-
     return '<h1>Phase 4 Project Server</h1>'
 
 class Users(Resource):
