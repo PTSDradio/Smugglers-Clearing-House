@@ -1,8 +1,8 @@
-"""updates models
+"""updates itemcat
 
-Revision ID: c07a6e95df05
+Revision ID: 8d2801d4a105
 Revises: 
-Create Date: 2023-08-30 18:23:58.741326
+Create Date: 2023-08-31 10:10:37.624545
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c07a6e95df05'
+revision = '8d2801d4a105'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,11 +60,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('item_categories',
-    sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.Column('item_id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('category_id', sa.Integer(), nullable=True),
+    sa.Column('item_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], name=op.f('fk_item_categories_category_id_categories')),
     sa.ForeignKeyConstraint(['item_id'], ['items.id'], name=op.f('fk_item_categories_item_id_items')),
-    sa.PrimaryKeyConstraint('category_id', 'item_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

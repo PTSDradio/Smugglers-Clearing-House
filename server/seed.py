@@ -21,7 +21,7 @@ def create_items(seller, user):
             image_url = """https://i.ytimg.com/vi/kPj_IeH6ZZE/maxresdefault.jpg""",
             description = fake.text(),
             seller_id = rc(seller).id,
-            purchaser_id = rc(user).id
+            # purchaser_id = rc(user).id
 
             # listed_by = rc(users).id
         )
@@ -31,7 +31,8 @@ def create_items(seller, user):
 def create_users():
     users = []
     for i in range(5):
-        u = User(name = fake.name(),
+        u = User(username = fake.name(),
+                 password = fake.password()
 
         )
         users.append(u)
@@ -40,7 +41,8 @@ def create_users():
 def create_sellers():
     users = []
     for i in range(5):
-        u = Seller(name = fake.name(),
+        u = Seller(username = fake.name(),
+                   password = fake.password()
         )
         users.append(u)
     return users
@@ -63,9 +65,11 @@ def create_category(items):
 
 def CatItem(items, categories):
     li = []
-    for i in range(10):
+    for i in range(5):
         ic = ItemCategory(category_id=rc(categories).id, item_id=rc(items).id)
-        li.append(ic)
+       
+        li.append(ic) 
+        print("done")
     return li
 
 
