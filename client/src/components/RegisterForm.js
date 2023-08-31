@@ -87,9 +87,6 @@ function RegisterForm(){
               <button type="submit">Submit</button>
               <NavLink to='/login'> Already have an account? Login here. </NavLink>
             </form>
-          ) : (
-            <p>Fucky wucky </p>
-          )}
         </div>
       );
   }
