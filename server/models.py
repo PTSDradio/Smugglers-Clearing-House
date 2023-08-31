@@ -15,7 +15,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(db.String)
 
     items = db.relationship('Item',  back_populates='purchaser')
-    serialize_rules = ('-item.purchaser',)
+    serialize_rules = ('-items.purchaser',)
 
 class Seller(db.Model, SerializerMixin):
     __tablename__ = 'sellers'
@@ -23,8 +23,8 @@ class Seller(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
-    items = db.relationship('Item', back_populates='seller')
-    serialize_rules = ('-item.seller',)
+    listings = db.relationship('Item', cascade='all, delete', back_populates='seller')
+    serialize_rules = ('-listings.seller',)
 
 class Item(db.Model, SerializerMixin):
     __tablename__ = 'items'
@@ -38,17 +38,17 @@ class Item(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     is_purchased = db.Column(db.Boolean, default=False)
 
-    auction = db.relationship('Auction', back_populates='item', uselist=False)
+    auction = db.relationship('Auction', cascade='all, delete', back_populates='item', uselist=False)
 
     seller_id = db.Column(db.Integer, db.ForeignKey('sellers.id'))
-    seller = db.relationship("Seller", back_populates='items')
+    seller = db.relationship("Seller", cascade='all, delete', back_populates='listings')
 
     purchaser_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    purchaser = db.relationship("User", back_populates='items')
+    purchaser = db.relationship("User", cascade='all, delete', back_populates='items')
 
-    categories = db.relationship('Category', secondary="item_categories", back_populates="items")
+    categories = db.relationship('Category', secondary="item_categories", cascade='all, delete', back_populates="items")
     
-    serialize_rules = ('-category.items','-user.items', '-seller.items', '-auction.item' )
+    serialize_rules = ('-categories.items', '-seller.listings', '-auction.item', '-purchaser.items' )
     
     @validates('price')
     def validate_price(self, key, price): 
@@ -67,15 +67,15 @@ class Auction(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    item = db.relationship('Item', back_populates='auction')
+    item = db.relationship('Item', cascade='all, delete', back_populates='auction')
 
-    top_bid = db.Column(db.Integer)
+    top_bid = db.Column(db.Integer, default=0)
     top_bid_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     top_bidder = db.Column(db.String) # might have to make another association table to handle purchasing
 
     end_time= db.Column(db.String) # if possible handle making timer from this but this it a placeholder for now
 
-
+    serialize_rules=('-item.auction',)
     
     #Stretch goal, have the item listing expire a week from listed date. 
     # current_date = datetime.now()
@@ -87,7 +87,7 @@ class Category(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String)
-    items = db.relationship('Item', secondary="item_categories", back_populates="categories")
+    items = db.relationship('Item', secondary="item_categories", cascade='all, delete', back_populates="categories")
 
     serialize_rules =('-item.categories',)
 

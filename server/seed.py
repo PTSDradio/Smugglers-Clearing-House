@@ -12,16 +12,16 @@ from models import db, User, Item, Auction, Category, ItemCategory, Seller, Item
 
 fake = Faker()
 
-def create_items(seller):
+def create_items(seller, user):
     items = []
     for i in range(15):
         i = Item(
             name = fake.name(),
             price = fake.random_int(),
-            image_url = """https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fdwayne-the-rock-pikmin-v0-sv7qo7tsgt2b1.jpg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3Da14114a054fc999abee8eef130e66e9b26ddfa1c""",
+            image_url = """https://i.ytimg.com/vi/kPj_IeH6ZZE/maxresdefault.jpg""",
             description = fake.text(),
             seller_id = rc(seller).id,
-
+            purchaser_id = rc(user).id
 
             # listed_by = rc(users).id
         )
@@ -57,14 +57,17 @@ def create_category(items):
     li = []
     for c in categories:
         cats = Category(category_name=c)
-        cats.items.append(rc(items))
+        
         li.append(cats)
     return li 
 
-# def append_cat_to_items(items, categories):
-#     for item in items:
-#         item.categories.append(rc(categories))
-#     return items
+def CatItem(items, categories):
+    li = []
+    for i in range(10):
+        ic = ItemCategory(category_id=rc(categories).id, item_id=rc(items).id)
+        li.append(ic)
+    return li
+
 
 if __name__ == '__main__':
     with app.app_context():
@@ -88,7 +91,7 @@ if __name__ == '__main__':
         db.session.commit()
 
         print("Seeding items")
-        items = create_items(users)
+        items = create_items(sellers, users)
         db.session.add_all(items)
         db.session.commit() 
 
@@ -100,4 +103,9 @@ if __name__ == '__main__':
         print("seeding categories")
         categories = create_category(items)
         db.session.add_all(categories)
+        db.session.commit()
+
+        print("seeding item cat relationships")
+        ic = CatItem(items, categories)
+        db.session.add_all(ic)
         db.session.commit()

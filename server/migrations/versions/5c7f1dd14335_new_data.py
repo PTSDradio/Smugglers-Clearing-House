@@ -1,8 +1,8 @@
-"""resetting the backend
+"""new data
 
-Revision ID: 1678181fef86
+Revision ID: 5c7f1dd14335
 Revises: 
-Create Date: 2023-08-30 20:33:54.487189
+Create Date: 2023-08-31 11:35:57.638004
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1678181fef86'
+revision = '5c7f1dd14335'
 down_revision = None
 branch_labels = None
 depends_on = None
