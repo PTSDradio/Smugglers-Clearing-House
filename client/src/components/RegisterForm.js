@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, Router, useNavigate   } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
 
 function RegisterForm(){
+  let navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     // const [userType, setUserType] = useState('');
     // const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ function RegisterForm(){
     const formSchema = yup.object().shape({
       username: yup.string().required("Must enter a username"),
       password: yup.string().required("Must enter a password"),
-      userType: yup.string().required("Must select an user type"),
+      user_type: yup.string().required("Must select an user type"),
     })
     
     const formik = useFormik({
@@ -20,7 +21,7 @@ function RegisterForm(){
         username: "",
         password: "", 
         user_type: "",
-      },
+      }, 
       validationSchema: formSchema, 
       onSubmit:  async (values) => {
         const usernameExists = null //Code here to check if user exists 
@@ -50,7 +51,8 @@ function RegisterForm(){
             <form onSubmit={formik.handleSubmit}>
               <label>
                 Select user type: 
-                <select id='user_type' value={formik.values.user_type} onChange={formik.handleChange}> 
+                <select id='user_type' name='user_type' value={formik.values.user_type} onChange={formik.handleChange}> 
+                <option > select type </option>
                   <option value='buyer'> Buyer </option>
                   <option value='seller'> Seller </option>
                 </select>
@@ -60,6 +62,7 @@ function RegisterForm(){
                 Username:
                 <input
                   id='username'
+                  name='username'
                   type="text"
                   value={formik.values.username}
                   placeholder="Username"
@@ -72,6 +75,7 @@ function RegisterForm(){
                 Password:
                 <input
                   id='password'
+                  name='password'
                   type="password"
                   value={formik.values.password}
                   placeholder="Password"
@@ -80,9 +84,12 @@ function RegisterForm(){
                 <p style={{ color: "red" }}> {formik.errors.password}</p>
               </label>
               <br />
-              <button type="submit">Login</button>
+              <button type="submit">Submit</button>
               <NavLink to='/login'> Already have an account? Login here. </NavLink>
             </form>
+          ) : (
+            <p>Fucky wucky </p>
+          )}
         </div>
       );
   }

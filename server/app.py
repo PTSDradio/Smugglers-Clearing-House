@@ -282,12 +282,12 @@ class Register(Resource):
         username = data["username"]
         password = data["password"]
         if user_type == "buyer":
-            new_user = User(username=data['username'], password=data['password'])
+            new_user = User(username=username, password=password)
             db.session.add(new_user)
             db.session.commit()
             return make_response(new_user.to_dict(), 200)
         elif user_type == "seller":
-            new_user = Seller(username=data['username'], password=data['password'])
+            new_user = Seller(username=username, password=password)
             db.session.add(new_user)
             db.session.commit()
             return make_response(new_user.to_dict(), 200)
