@@ -1,77 +1,116 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
+import { Formik, useFormik } from "formik";
+import * as yup from "yup";
 
 function LoginForm(){
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userType, setUserType] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    // const [userType, setUserType] = useState('');
+    // const [username, setUsername] = useState('');
+    // const [password, setPassword] = useState('');
 
-    const loginAction = () => {
-      const loginInfo = {
-        type: userType,
-        name: username,
-        password: password,
-      }
-      
-      //This fetch link needs to be changed to a new API route that manages logins. This just posts a new user. 
-      fetch(`http://localhost:5555/${userType}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(loginInfo)})
-        .then((res) => res.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error('Error', error);
-          window.alert(error);
-        })
-    }
+    const [refreshPage, setRefreshPage] = useState(false);
 
-    const handleLogin = (e) => {
-      e.preventDefault();
-      // Login logic is called on here. 
-      loginAction()
-    };
+    const formSchema = yup.object().shape({
+      username: yup.string().required("Must enter a username"),
+      password: yup.string().required("Must enter a password"),
+      userType: yup.string().required("Must select an user type"),
+    })
     
-    const handleSelectChange = (e) => {
-      // This determines which URL the login POST request is sent to.
-      setUserType(e.target.value);
-    };
+    const formik = useFormik({
+      initialValues: {
+        username: "",
+        password: "", 
+        user_type: "",
+      },
+      validationSchema: formSchema, 
+      onSubmit: (values) => {
+        fetch('http://localhost:3000/login', {
+          method: 'POST', 
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            setRefreshPage(!refreshPage)
+            setIsLoggedIn(true)
+          }
+        })
+      }
+    })
+
+    // const loginAction = () => {
+    //   const loginInfo = {
+    //     username: username,
+    //     password: password,
+    //     user_type: userType
+    //   }
+      
+    //   //This fetch link needs to be changed to a new API route that manages logins. This just posts a new user. 
+    //   fetch(`http://localhost:5555/login`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(loginInfo)})
+    //     .then((res) => res.json())
+    //     .then(data => {
+    //       console.log(data);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error', error);
+    //       window.alert(error);
+    //     })
+    // }
+
+    // const handleLogin = (e) => {
+    //   e.preventDefault();
+    //   // Login logic is called on here. 
+    //   loginAction()
+    // };
+    
+    // const handleSelectChange = (e) => {
+    //   // This determines which URL the login POST request is sent to.
+    //   setUserType(e.target.value);
+    // };
 
     return (
       <div>
         Login: 
         {!isLoggedIn ? (
-          <form onSubmit={handleLogin}>
+          <form onSubmit={formik.handleSubmit}>
             <label>
               Select user type: 
-              <select value={userType} onChange={handleSelectChange}> 
-                <option value='users'> Buyer </option>
-                <option value='sellers'> Seller </option>
+              <select id='user_type' value={formik.values.user_type} onChange={formik.handleChange}> 
+                <option value='buyer'> Buyer </option>
+                <option value='seller'> Seller </option>
               </select>
+              <p style={{ color: "red" }}> {formik.errors.user_type}</p>
             </label>
             <label>
               Username:
               <input
+                id='username'
                 type="text"
-                value={username}
+                value={formik.values.username}
                 placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={formik.handleChange}
               />
+              <p style={{ color: "red" }}> {formik.errors.username}</p>
             </label>
             <br />
             <label>
               Password:
               <input
+                id='password'
                 type="password"
-                value={password}
+                value={formik.values.password}
                 placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={formik.handleChange}
               />
+              <p style={{ color: "red" }}> {formik.errors.password}</p>
             </label>
             <br />
             <button type="submit">Login</button>
