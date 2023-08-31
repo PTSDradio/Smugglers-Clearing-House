@@ -5,20 +5,20 @@ function Search({ handleSearch }){
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      setSearch(e.target.value)
       handleSearch(search);
     }
-   
+
   
     return (
-        <form className="searchbar" onSubmit={handleSubmit}>
+        <form className="searchbar">
             <input
             type="text"
             id="search"
             placeholder="Search by name"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {handleSubmit(e)}}
             />
-            <button type="submit">🔍</button>
       </form>
     )
 }

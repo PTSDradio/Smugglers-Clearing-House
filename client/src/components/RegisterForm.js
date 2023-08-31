@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { NavLink } from "react-router-dom";
 
-function LoginForm(){
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+function RegisterForm(){
+    const [isRegistered, setIsRegistered] = useState(false);
     const [userType, setUserType] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const loginAction = () => {
+    const registerAccount = () => {
       const loginInfo = {
         type: userType,
         name: username,
         password: password,
       }
       
-      //This fetch link needs to be changed to a new API route that manages logins. This just posts a new user. 
       fetch(`http://localhost:5555/${userType}`, {
         method: 'POST',
         headers: {
@@ -34,7 +32,7 @@ function LoginForm(){
     const handleLogin = (e) => {
       e.preventDefault();
       // Login logic is called on here. 
-      loginAction()
+      registerAccount()
     };
     
     const handleSelectChange = (e) => {
@@ -44,8 +42,8 @@ function LoginForm(){
 
     return (
       <div>
-        Login: 
-        {!isLoggedIn ? (
+        Register for New Account: 
+        {!isRegistered ? (
           <form onSubmit={handleLogin}>
             <label>
               Select user type: 
@@ -75,14 +73,13 @@ function LoginForm(){
             </label>
             <br />
             <button type="submit">Login</button>
-            <NavLink to='/register'> Need an account? Register here. </NavLink>
           </form>
         ) : (
-          <p>You are logged in!</p>
+          <p>You have registered your account!</p>
         )}
       </div>
     );
   }
   
-export default LoginForm;
+export default RegisterForm;
   

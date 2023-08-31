@@ -11,11 +11,23 @@ function SellScreen(){
         name: itemName,
         description: itemDesc,
         price: itemPrice,
-        image_url: itemImageUrl
+        image_url: itemImageUrl,
+        seller_id: null,
     }
-    
+
     const listItem = () => {
-        window.alert("gotcha!")
+        fetch("http://localhost:3000/items", {
+            method: "POST", 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(itemListing)})
+            .then((res) => res.json())
+            .then(data => {console.log(data)})
+            .catch(error => {
+                console.error('Error', error);
+                window.alert(error);
+              })
     }
 
     const handleSubmit = (e) => {
@@ -30,7 +42,7 @@ function SellScreen(){
                 <br />
                 <label> Description: <input type='text' onChange={(e) => setItemDesc(e.target.value)}/> </label>
                 <br />
-                <label> Item Price: <input type='text' onChange={(e) => setItemPrice(e.target.value)}/> </label>
+                <label> Item Price: <input type='number' onChange={(e) => setItemPrice(e.target.value)}/> </label>
                 <br /> 
                 <label> Image URL <input type='text'onChange={(e) => setItemImageUrl(e.target.value)}/> </label>
                 <br /> 

@@ -10,6 +10,7 @@ function NavBar() {
           <li> <NavLink to='/'> Buy </NavLink> </li>
           <li> <NavLink to="/sell"> Sell </NavLink> </li>
           <li> <NavLink to='/account'> Account </NavLink> </li>
+          <li> <NavLink to='/login'> Register/Login </NavLink></li>
         </nav>
     </header>
   );
