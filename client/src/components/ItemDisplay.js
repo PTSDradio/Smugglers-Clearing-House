@@ -29,7 +29,7 @@ function ItemDisplay({ item }){
 
 
     //Need to add code to show the current highest bid amount.
-    //Need to add code to show the list of categories. 
+    //Need to add code to show the list of categories.
     return (
         <div className='item-container'>
             <h3> {item.name} </h3>

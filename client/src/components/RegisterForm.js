@@ -22,26 +22,31 @@ function RegisterForm(){
         user_type: "",
       },
       validationSchema: formSchema, 
-      onSubmit: (values) => {
-        fetch('http://127.0.0.1:5555/login', {
-          method: 'POST', 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            setIsLoggedIn(true)
-          }
-        })
-      }
-    })
+      onSubmit:  async (values) => {
+        const usernameExists = null //Code here to check if user exists 
+        if (usernameExists) {
+        alert("Username already exists");
+        } else {
+        try {
+            const response = await fetch("http://127.0.0.1:5555/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values, null, 2),
+            });
+            if (response.status === 200) {
+
+            }} 
+            catch (error) {
+            console.error("Error Posting Users:", error);
+        }
+        }
+      },
+    });
 
     return (
         <div>
-          Login: 
-          {!isLoggedIn ? (
             <form onSubmit={formik.handleSubmit}>
               <label>
                 Select user type: 
@@ -78,9 +83,6 @@ function RegisterForm(){
               <button type="submit">Login</button>
               <NavLink to='/login'> Already have an account? Login here. </NavLink>
             </form>
-          ) : (
-            <p>You have registered your account! <link href='http://localhost:3000/login'> Sign in here </link> </p>
-          )}
         </div>
       );
   }

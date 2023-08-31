@@ -14,7 +14,7 @@ function NavBar({ isLoggedIn }) {
           <li> <NavLink to='/'> Buy </NavLink> </li>
           <li> <NavLink to="/sell"> Sell </NavLink> </li>
           <li> <NavLink to='/account'> Account </NavLink> </li>
-          {!isLoggedIn ? <button> Logout </button> :  <li> <NavLink to='/login'> Register/Login </NavLink></li> }
+          {isLoggedIn ? <button> Logout </button> : <li> <NavLink to='/login'> Register/Login </NavLink></li> }
         </nav>
     </header>
   );
