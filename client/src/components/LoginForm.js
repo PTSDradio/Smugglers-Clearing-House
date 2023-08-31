@@ -43,10 +43,10 @@ function LoginForm(){
     };
 
     return (
-      <div>
+      <div className="login-container">
         Login: 
         {!isLoggedIn ? (
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} className="login-form">
             <label>
               Select user type: 
               <select value={userType} onChange={handleSelectChange}> 
@@ -54,6 +54,7 @@ function LoginForm(){
                 <option value='sellers'> Seller </option>
               </select>
             </label>
+            <br />
             <label>
               Username:
               <input
@@ -75,6 +76,7 @@ function LoginForm(){
             </label>
             <br />
             <button type="submit">Login</button>
+            <br />
             <NavLink to='/register'> Need an account? Register here. </NavLink>
           </form>
         ) : (

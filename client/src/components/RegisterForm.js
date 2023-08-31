@@ -41,7 +41,7 @@ function RegisterForm(){
     };
 
     return (
-      <div>
+      <div className="register-container">
         Register for New Account: 
         {!isRegistered ? (
           <form onSubmit={handleLogin}>
