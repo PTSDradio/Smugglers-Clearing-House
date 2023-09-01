@@ -77,7 +77,7 @@ function LoginForm(){
             <br />
             <button type="submit">Login</button>
             <br />
-            <NavLink to='/register'> Need an account? Register here. </NavLink>
+            <NavLink  className="register-link" to='/register'> Need an account? Register here. </NavLink>
           </form>
         ) : (
           <p>You are logged in!</p>

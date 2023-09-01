@@ -38,15 +38,15 @@ function SellScreen(){
     return (
         <div className="seller-container">
             <form className="seller-form">
-                <label> Item Name: <input type='text' onChange={(e) => setItemName(e.target.value)}/> </label>
+                <label className="seller-item"> Item Name: <input type='text' onChange={(e) => setItemName(e.target.value)}/> </label>
                 <br />
-                <label> Description: <input type='text' onChange={(e) => setItemDesc(e.target.value)}/> </label>
+                <label className="seller-description"> Description: <input type='text' onChange={(e) => setItemDesc(e.target.value)}/> </label>
                 <br />
-                <label> Item Price:  <input type='number' onChange={(e) => setItemPrice(e.target.value)}/> </label>
+                <label className="seller-price"> Item Price:  <input type='number' onChange={(e) => setItemPrice(e.target.value)}/> </label>
                 <br /> 
-                <label> Image URL <input type='text'onChange={(e) => setItemImageUrl(e.target.value)}/> </label>
+                <label className="seller-url"> Image URL <input type='text'onChange={(e) => setItemImageUrl(e.target.value)}/> </label>
                 <br /> 
-                <button onClick={handleSubmit}> Submit Item Listing </button>
+                <button onClick={handleSubmit}className="seller-submit"> Submit Item Listing </button>
             </form>
         </div>
     )
