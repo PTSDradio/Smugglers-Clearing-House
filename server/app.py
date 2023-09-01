@@ -263,7 +263,7 @@ class Login(Resource):
             if user and user.password == password:
                 session['user_id']= user.id
                 session['user_type']= user_type
-                return user.to_dict(), 200
+                return make_response(user.to_dict(), 200)
             return make_response({'error': 'invalid password'}, 401)
         elif user_type == "seller":
             seller = Seller.query.filter(Seller.username == username).first()
@@ -271,7 +271,7 @@ class Login(Resource):
             if seller and seller.password == password:
                 session['user_id']= seller.id
                 session['user_type']= user_type
-                return user.to_dict(), 200
+                return make_response(user.to_dict(), 200)
             return make_response({'error': 'invalid password'}, 401)
         return make_response({'error': '401 Unauthorized'}, 401)
     

@@ -9,6 +9,7 @@ import RegisterForm from "./RegisterForm";
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSearch = (input) => {
     setSearchInput(input);
@@ -16,12 +17,12 @@ function App() {
 
   return (
     <div> 
-      <NavBar /> 
+      <NavBar isLoggedIn={isLoggedIn}/> 
         <Routes>
           <Route exact path='/' element={<BuyScreen searchInput={searchInput} handleSearch={handleSearch}/>}/>
           <Route exact path='/sell' element={<SellScreen />}/>
           <Route exact path='account' element={<AccountScreen searchInput={searchInput} handleSearch={handleSearch}/>}/> 
-          <Route exact path='/login' element={<LoginForm />}/>
+          <Route exact path='/login' element={<LoginForm isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}/>
           <Route exact path='/register' element={<RegisterForm />}/> 
         </Routes>
     </div>
