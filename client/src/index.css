@@ -24,6 +24,10 @@ body {
   background-color: #ddd;
   color: black;
 }
+.navlink { 
+  background-color: #5f694e;
+  color: white
+}
 
 .items-list{ 
   display: flex;
@@ -149,6 +153,7 @@ li {
 .register-link {
   padding-top: 20px;
   margin-top: 25px;
+  background: #5f694e; 
 }
 
 .register-link a:hover {

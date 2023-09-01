@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ItemDisplay from "./ItemDisplay.js";
 import Search from "./Search";
 
-function BuyScreen({ searchInput, handleSearch }){
+function BuyScreen({ searchInput, handleSearch, user }){
     const [itemList, setItemList] = useState([])
 
     useEffect(() => {
@@ -21,10 +21,11 @@ function BuyScreen({ searchInput, handleSearch }){
       });
     const itemsToDisplay = filteredItems.map((item) => {
         if (item.is_purchased === false) {
-            return <ItemDisplay id={item.id} item={item} /> 
+            return <ItemDisplay id={item.id} item={item} user={user} /> 
         }
     })
 
+ 
     return (
         <div>
             <Search handleSearch={handleSearch} />

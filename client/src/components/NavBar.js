@@ -14,7 +14,7 @@ function NavBar({ isLoggedIn, setIsLoggedIn }) {
     <header>      
         <nav className="navbar-styles"> 
           <img className="logo1-img" src={logo1} alt={"logo"}/>
-          <div>
+          <div className='navlink'>
           <li> <NavLink to='/'> Buy </NavLink> </li>
           <li> <NavLink to="/sell"> Sell </NavLink> </li>
           <li> <NavLink to='/account'> Account </NavLink> </li>

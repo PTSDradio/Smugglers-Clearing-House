@@ -80,11 +80,17 @@ class Auction(db.Model, SerializerMixin):
 
     serialize_rules=('-item.auction',)
     
+    @validates('top_bid')
+    def validate_top_bid(self, key, bid): 
+        if bid <= self.top_bid: 
+            raise ValueError('Bid amount must be higher than current bid.')
+        return bid 
+    
     #Stretch goal, have the item listing expire a week from listed date. 
     # current_date = datetime.now()
     # one_week_later = current_date + timedelta(weeks=1)
     # end_date = db.Column(db.DateTime, one_week_later)
-
+                 
 class Category(db.Model, SerializerMixin):
     __tablename__ = 'categories'
 

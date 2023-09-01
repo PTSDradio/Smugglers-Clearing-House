@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 function ItemDisplay({ item }){
-    const [bidAmount, setBidAmount] = useState();
-    
-    //Repurpose this to use Formik 
-    async function enterBid(){
-        const bid = {
-            method: "POST", 
+    const formSchema = yup.object().shape({
+        bid_amount: yup.number().required("Must enter a bid amount higher than the current bid amount.")
+        })
+        
+        const formik = useFormik({
+        initialValues: {
+            user_id: "user_id", //Code here to input user_id from session cookie. 
+            bid_amount: "",
+        },
+        validationSchema: formSchema, 
+        onSubmit: (values) => {
+            fetch(`http://127.0.0.1:5555/auctions/${item.id}`, {
+            method: 'POST', 
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(bidAmount),
-        };
-        const res = await fetch("/items")
-        if (res.ok){
-            //Code here to enter bid into item. 
-        } else {
-            //Code here to alert error. 
+            body: JSON.stringify(values, null, 2),
+            })
+            .then((res) => {
+            if (res.status == 200) {
+                
+                console.log(res)
+            }
+            })
+            //Back end - Write a function that Users/Sellers.query.filter(values.username)
+            //Back end - GET request by user/seller ID.
+            //Front end - Assign useState variable with user/seller items. 
         }
-    }
-    function handleChange(e) {
-        setBidAmount(e.target.value);
-      }
-    
-    function handleSubmit(e) {
-        e.preventDefault();
-        enterBid()
-    }
+        })
 
 
     //Need to add code to show the current highest bid amount.
@@ -37,9 +42,9 @@ function ItemDisplay({ item }){
             <h3> Description: <h4>{item.description}</h4> </h3>
             <h3> $ {item.price} </h3>
             <img src={item.image_url} />
-            <form>
-                <input type='text' placeholder='Enter bid amount here' onChange={handleChange}></input>
-                <button type='submit' onClick={handleSubmit}> Enter Bid </button>
+            <form> onSubmit={formik.handleSubmit}
+                <input type='text' placeholder='Enter bid amount here' value={formik.values.bid_amount} onChange={formik.handleChange}></input>
+                <button type='submit'> Enter Bid </button>
             </form>
         </div>
     )

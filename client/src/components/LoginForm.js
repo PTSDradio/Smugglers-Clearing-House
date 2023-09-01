@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 
 function LoginForm({ isLoggedIn, setIsLoggedIn }){
+
     const formSchema = yup.object().shape({
       username: yup.string().required("Must enter a username"),
       password: yup.string().required("Must enter a password"),
@@ -28,11 +29,12 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
         .then((res) => {
           if (res.status == 200) {
             setIsLoggedIn(true)
+            console.log(res)
           }
         })
-        //Write a function that Users/Sellers.query.filter(values.username)
-        //GET request by user/seller ID.
-        //Assign useState variable with user/seller items. 
+        //Back end - Write a function that Users/Sellers.query.filter(values.username)
+        //Back end - GET request by user/seller ID.
+        //Front end - Assign useState variable with user/seller items. 
       }
     })
 
@@ -79,6 +81,8 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
             <br />
             <button type="submit">Login</button>
             <br />
+            <br />
+            <br /> 
             <NavLink className="register-link" to='/register'> Need an account? Register here. </NavLink>
           </form>
         )}
