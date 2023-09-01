@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 
 function LoginForm({ isLoggedIn, setIsLoggedIn }){
-    // const [userType, setUserType] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
 
     const formSchema = yup.object().shape({
       username: yup.string().required("Must enter a username"),
@@ -29,54 +26,29 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
           },
           body: JSON.stringify(values, null, 2),
         })
+        .then((res) => res.json())
         .then((res) => {
           if (res.status == 200) {
             setIsLoggedIn(true)
+            console.log(res)
           }
         })
+        // .then((data) => console.log(data))
+
+        //Back end - Write a function that Users/Sellers.query.filter(values.username)
+        //Back end - GET request by user/seller ID.
+        //Front end - Assign useState variable with user/seller items. 
       }
     })
 
-    // const loginAction = () => {
-    //   const loginInfo = {
-    //     username: username,
-    //     password: password,
-    //     user_type: userType
-    //   }
-      
-    //   //This fetch link needs to be changed to a new API route that manages logins. This just posts a new user. 
-    //   fetch(`http://localhost:5555/login`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(loginInfo)})
-    //     .then((res) => res.json())
-    //     .then(data => {
-    //       console.log(data);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error', error);
-    //       window.alert(error);
-    //     })
-    // }
-
-    // const handleLogin = (e) => {
-    //   e.preventDefault();
-    //   // Login logic is called on here. 
-    //   loginAction()
-    // };
-    
-    // const handleSelectChange = (e) => {
-    //   // This determines which URL the login POST request is sent to.
-    //   setUserType(e.target.value);
-    // };
-
+  
     return (
-      <div>
+      <div className="login-container">
         Login: 
-        {!isLoggedIn ? (
-          <form onSubmit={formik.handleSubmit}>
+        {isLoggedIn ? (
+          <p>You are logged in!</p>
+        ) : (
+          <form onSubmit={formik.handleSubmit} className="login-form">
             <label>
               Select user type: 
               <select id='user_type' name='user_type' value={formik.values.user_type} onChange={formik.handleChange}> 
@@ -87,7 +59,7 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
               <p style={{ color: "red" }}> {formik.errors.user_type}</p>
             </label>
             <label>
-              Username:
+              Username: 
               <input
                 id='username'
                 type="text"
@@ -111,10 +83,11 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
             </label>
             <br />
             <button type="submit">Login</button>
-            <NavLink to='/register'> Need an account? Register here. </NavLink>
+            <br />
+            <br />
+            <br /> 
+            <NavLink className="register-link" to='/register'> Need an account? Register here. </NavLink>
           </form>
-        ) : (
-          <p>You are logged in!</p>
         )}
       </div>
     );

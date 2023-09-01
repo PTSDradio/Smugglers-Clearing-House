@@ -35,7 +35,6 @@ function Search({ handleSearch }){
                 <option value='contraband'> contraband </option>
                 <option value='clothes'> clothes </option>
               </select>
-              
             </label>
 
       </form>

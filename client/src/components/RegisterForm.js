@@ -3,12 +3,8 @@ import { NavLink, Router, useNavigate   } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
 
-function RegisterForm(){
-  let navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [userType, setUserType] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
+function RegisterForm({ setIsLoggedIn }){
+    let navigate = useNavigate();
 
     const formSchema = yup.object().shape({
       username: yup.string().required("Must enter a username"),
@@ -42,10 +38,9 @@ function RegisterForm(){
     })
     // console.log(formik.values)
     return (
-        <div>
+        <div className="login-container">
           Register: 
-          {!isLoggedIn ? (
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="login-form">
               <label>
                 Select user type: 
                 <select id='user_type' name='user_type' value={formik.values.user_type} onChange={formik.handleChange}> 
@@ -84,9 +79,6 @@ function RegisterForm(){
               <button type="submit">Submit</button>
               <NavLink to='/login'> Already have an account? Login here. </NavLink>
             </form>
-          ) : (
-            <p>Fucky wucky </p>
-          )}
         </div>
       );
   }
