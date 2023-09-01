@@ -55,7 +55,7 @@ def create_bids(items, users):
     return bids
 
 def create_category(items):
-    categories = ['Furniture', 'Sporting goods', 'Jewelry', 'Weapons', 'Questionables']
+    categories = ['art', 'furniture', 'clothes', 'jelewry', 'contraband']
     li = []
     for c in categories:
         cats = Category(category_name=c)

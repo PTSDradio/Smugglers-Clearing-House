@@ -9,13 +9,13 @@ function LoginForm(){
 
     const loginAction = () => {
       const loginInfo = {
-        type: userType,
-        name: username,
+        username: username,
         password: password,
+        user_type: userType
       }
       
       //This fetch link needs to be changed to a new API route that manages logins. This just posts a new user. 
-      fetch(`http://localhost:5555/${userType}`, {
+      fetch(`http://localhost:5555/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -50,8 +50,8 @@ function LoginForm(){
             <label>
               Select user type: 
               <select value={userType} onChange={handleSelectChange}> 
-                <option value='users'> Buyer </option>
-                <option value='sellers'> Seller </option>
+                <option value='buyer'> Buyer </option>
+                <option value='seller'> Seller </option>
               </select>
             </label>
             <label>
