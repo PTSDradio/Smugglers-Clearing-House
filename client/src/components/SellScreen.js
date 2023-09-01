@@ -36,8 +36,8 @@ function SellScreen(){
     }
 
     return (
-        <div> 
-            <form>
+        <div className="seller-container"> 
+            <form className="seller-form">
                 <label> Item Name: <input type='text' onChange={(e) => setItemName(e.target.value)}/> </label>
                 <br />
                 <label> Description: <input type='text' onChange={(e) => setItemDesc(e.target.value)}/> </label>

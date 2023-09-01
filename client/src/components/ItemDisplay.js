@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 function ItemDisplay({ item }){
     const [bidAmount, setBidAmount] = useState();
-
+    
+    //Repurpose this to use Formik 
     async function enterBid(){
         const bid = {
             method: "POST", 

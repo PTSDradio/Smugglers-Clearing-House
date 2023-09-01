@@ -24,9 +24,7 @@ function BuyScreen({ searchInput, handleSearch }){
             return <ItemDisplay id={item.id} item={item} /> 
         }
     })
-    //Where can we code so if item.is_purchased is true, 
-    //the item does not show up in the list.  
-    
+
     return (
         <div>
             <Search handleSearch={handleSearch} />
