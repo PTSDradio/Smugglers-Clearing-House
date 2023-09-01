@@ -26,12 +26,15 @@ function LoginForm({ isLoggedIn, setIsLoggedIn }){
           },
           body: JSON.stringify(values, null, 2),
         })
+        .then((res) => res.json())
         .then((res) => {
           if (res.status == 200) {
             setIsLoggedIn(true)
             console.log(res)
           }
         })
+        // .then((data) => console.log(data))
+
         //Back end - Write a function that Users/Sellers.query.filter(values.username)
         //Back end - GET request by user/seller ID.
         //Front end - Assign useState variable with user/seller items. 

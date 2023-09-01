@@ -23,7 +23,7 @@ function ItemDisplay({ item }){
             })
             .then((res) => {
             if (res.status == 200) {
-                
+                //
                 console.log(res)
             }
             })
@@ -42,7 +42,7 @@ function ItemDisplay({ item }){
             <h3> Description: <h4>{item.description}</h4> </h3>
             <h3> $ {item.price} </h3>
             <img src={item.image_url} />
-            <form> onSubmit={formik.handleSubmit}
+            <form onSubmit={formik.handleSubmit}> 
                 <input type='text' placeholder='Enter bid amount here' value={formik.values.bid_amount} onChange={formik.handleChange}></input>
                 <button type='submit'> Enter Bid </button>
             </form>
